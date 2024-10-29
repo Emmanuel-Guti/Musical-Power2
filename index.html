@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musical Power</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <link rel="icon" href="logo.jfif" type="image/x-icon">
+</head>
+<body>
+    <center>
+    <div id="app">
+        <div class="container">
+            <h1>{{ titulo }}</h1>
+            <div v-if="!nombre">
+                <form @submit.prevent="mostrarPreguntas">
+                    <label for="nombre">Ingresa tu nombre:</label>
+                    <input type="text" v-model="nombreInput">
+                    <button type="submit">Empezar</button>
+                </form>
+            </div>
+            <div v-else>
+                <form @submit.prevent="calcularResultados">
+                    <div v-for="(pregunta, index) in preguntas" :key="index" class="pregunta">
+                        <label>{{ pregunta.texto }}</label>
+                        <div v-for="respuesta in pregunta.respuestas" :key="respuesta">
+                            <input type="radio" :value="respuesta" v-model="respuestas[index]">
+                            <label>{{ respuesta }}</label>
+                        </div>
+                    </div>
+                    <button type="submit">Enviar Respuestas</button>
+                </form>
+                <div v-if="resultados[nombre] !== undefined">
+                    <p>Tu puntuación es: {{ resultados[nombre] }} de {{ preguntas.length }}</p>
+                </div>
+            </div><br>
+            <h3>Participantes Anteriores</h3>
+            <ol>
+                <li v-for="(puntuacion, participante) in resultados" :key="participante">
+                    {{ participante }}: {{ puntuacion }} puntos
+                </li>
+            </ol>
+            <button @click="borrarParticipantes">Borrar </button>
+        </div>
+    </div>
+    </center>
+    <script src="script.js"></script>
+</body>
+</html>
